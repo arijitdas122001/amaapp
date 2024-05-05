@@ -58,7 +58,7 @@ export async function POST(request:NextRequest){
        }
        return Response.json({
         success:true,
-        messagee:"User registerd successfully and send the verification email"
+        messagee:"User registerd successfully and sent the verification email"
     },{status:201});
     } catch (error) {
         return Response.json({
