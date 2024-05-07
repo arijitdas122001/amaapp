@@ -56,6 +56,7 @@ export async function POST(request:NextRequest){
             message:"Sending Mail failure",
         },{status:500});
        }
+    //    console.log(emailResponse);
        return Response.json({
         success:true,
         messagee:"User registerd successfully and sent the verification email"
