@@ -14,7 +14,7 @@ export async function GET(request:NextRequest) {
             },{status:400});
         }
         const checkExpiry=new Date(PresentUser?.CodeExpiry)>new Date();
-        const isCodeValid=PresentUser?.verificationCode==code;
+        const isCodeValid=PresentUser?.verificationCode===code;
         if(checkExpiry && isCodeValid){
             PresentUser.isVerified=true;
             await PresentUser.save();
