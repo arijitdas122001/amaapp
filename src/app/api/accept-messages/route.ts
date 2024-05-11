@@ -37,11 +37,11 @@ export async function GET(request:NextRequest) {
     }
     const user_id=user?._id;
     try {
-        const user=await UserModel.findById(user_id);
+        const user_form_db=await UserModel.findById(user_id);
         if(!user){
             return apiResponse(false,"User Not found while toggle",400);
         }
-        const Accepting=user.isAccepting;
+        const Accepting=user_form_db?.isAccepting;
         if(!Accepting){
             return apiResponse(true,"User Not accepting messages",200);
         }

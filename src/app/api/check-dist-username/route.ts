@@ -1,7 +1,6 @@
 import { DbConnection } from "@/lib/dbConnection";
 import UserModel from "@/model/User";
 import { NextRequest } from "next/server";
-import { Result } from "postcss";
 import { z } from "zod"
 const UserNameValidation=z
 .string()

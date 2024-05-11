@@ -16,7 +16,7 @@ export const authOptions:NextAuthOptions={
                 DbConnection();
                 try {
                     const user=await UserModel.findOne({
-                       eemail:credentials?.email
+                       email:credentials?.email
                     });
                     if(!user){
                         throw new Error("Can not find the user");

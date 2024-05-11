@@ -36,7 +36,3 @@ export async function POST(request: Request) {
     );
   }
 }
-
-function dbConnect() {
-    throw new Error('Function not implemented.');
-}
