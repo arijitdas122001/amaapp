@@ -13,17 +13,17 @@ import { Form, FormControl,FormField, FormItem, FormLabel, FormMessage } from '@
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Loader2 } from 'lucide-react'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 const page = () => {
   const [Username,setUsername]=useState('');
-  const [debouncedValue, setValue] = useDebounceValue(Username, 500);
+  const [debouncedValue, setValue] = useDebounceValue('', 500);
   const [checkingUsername,setCheckingUsername]=useState(false);
   const [onSubmitting,setOnSubmitting]=useState(false);
   const [UseNamecheckingMessage,setUseNamecheckingMessage]=useState('');
   const [email,setEmail]=useState('');
   const [password,setpassword]=useState('');
   const {toast}=useToast();
-  const route=useRouter();
+  const route=useRouter();  
   const form=useForm<z.infer<typeof SignUpSchema>>({
     resolver:zodResolver(SignInSchema),
     defaultValues:{
@@ -37,7 +37,9 @@ const page = () => {
       try {
         setCheckingUsername(true);
         setUsername('');
-        const res=await axios.post(`${process.env.URL}/check-dist-username?username=${debouncedValue}`);
+        console.log(Username);
+        const res=await axios.get(`/api/check-dist-username?username=${debouncedValue}`);
+        // console.log(res.data.message);
         setUseNamecheckingMessage(res.data.message)
       } catch (error) {
         const axioserror=error as AxiosError<ApiResponse>;
@@ -48,21 +50,28 @@ const page = () => {
       }
     }
     CheckUserName()
-  },[Username,debouncedValue]);
+  },[debouncedValue]);
   const onSubmit=async()=>{
     try {
       setOnSubmitting(true);
-      const res=await axios.post(`${process.env.URL}/sign-up`);
+      const data={
+      "username":Username,
+      "email":email,
+      "password":password
+      }
+      const res=await axios.post('/api/sign-up',data);
       toast({
         title:"success",
         description:res.data.message
       });
-      route.replace('/verify');
-    } catch (error) {
+      route
+    } catch (error:any) {
       const axioserror=error as AxiosError<ApiResponse>;
+      let errorMessage = axioserror.response?.data.message;
+      ('There was a problem with your sign-up. Please try again.');
       toast({
         title:"failure",
-        description:axioserror.response?.data.message
+        description:errorMessage
       })
     }finally{
       setOnSubmitting(false);
@@ -88,6 +97,7 @@ const page = () => {
               <FormControl>
                 <Input placeholder="Username" {...field} onChange={(e)=>{
                   field.onChange(e)
+                  setValue(e.target.value)
                   setUsername(e.target.value)
                 }} />
               </FormControl>
@@ -95,7 +105,7 @@ const page = () => {
           )}
         />
         {checkingUsername && <Loader2 className="animate-spin"/>}
-        <p className={`text-sm ${UseNamecheckingMessage==="user name is unique"?'text-green-500':'text-red-500'}`}></p>
+        <p className={`text-sm ${UseNamecheckingMessage==="user name is unique"?'text-green-500':'text-red-500'}`}>{UseNamecheckingMessage}</p>
           <FormField
           control={form.control}
           name="email"

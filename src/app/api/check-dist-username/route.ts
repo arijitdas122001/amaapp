@@ -4,7 +4,7 @@ import { NextRequest } from "next/server";
 import { z } from "zod"
 const UserNameValidation=z
 .string()
-.min(3, 'Username must be at least 2 characters')
+.min(2, 'Username must be at least 2 characters')
 .max(20, 'Username must be no more than 20 characters')
 .regex(/^[a-zA-Z0-9_]+$/, 'Username must not contain special characters');
 const UserNameSchema=z.object({
@@ -29,7 +29,7 @@ export async  function GET(request:NextRequest){
                       ? userNameErrors.join(', ')
                       : 'Invalid query parameters',
                 },
-                { status: 400 }
+                { status: 400}
               );
         }
         const {username}=isUnique.data;

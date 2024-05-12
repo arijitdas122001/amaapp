@@ -7,7 +7,7 @@ email:string,
 verificationCode:string):Promise<ApiResponse>=>{
     try {
           await resend.emails.send({
-            from: 'aribwnlvpgbwn@gmail.com',
+            from:'arijitd1211@gmail.com',
             to:email,
             subject: 'Verificaton Email',
             react: VerificationEmail({ username:username,verificationCode:verificationCode }),

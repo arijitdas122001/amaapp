@@ -12,7 +12,7 @@ export async function POST(request:NextRequest){
        if(findUser){
         return Response.json({
             success:false,
-            messagee:"User and email already verified and exists"
+            message:"User and email already verified and exists"
         },{status:400});
        }
        const exsistingUser=await UserModel.findOne({email});
@@ -59,12 +59,12 @@ export async function POST(request:NextRequest){
     //    console.log(emailResponse);
        return Response.json({
         success:true,
-        messagee:"User registerd successfully and sent the verification email"
+        message:"User registerd successfully and sent the verification email"
     },{status:201});
     } catch (error) {
         return Response.json({
             success:false,
-            messagee:"Error while creating the user"
+            message:"Error while creating the user"
         },{status:500});
     }
 }
