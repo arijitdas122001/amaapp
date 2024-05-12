@@ -2,15 +2,15 @@ import { DbConnection } from "@/lib/dbConnection";
 import UserModel from "@/model/User";
 import { NextRequest } from "next/server";
 
-export async function GET(request:NextRequest) {
+export async function POST(request:NextRequest) {
     await DbConnection();
     try {
-        const {username,email,code}=await request.json();
+        const {username,code}=await request.json();
         const PresentUser=await UserModel.findOne({username});
         if(!PresentUser){
             return Response.json({
                 success:false,
-                messagee:"User is not present"
+                message:"User is not present"
             },{status:400});
         }
         const checkExpiry=new Date(PresentUser?.CodeExpiry)>new Date();
@@ -45,7 +45,7 @@ export async function GET(request:NextRequest) {
     } catch (error) {
         return Response.json({
             success:false,
-            messagee:"Error while verifying the code"
+            message:"Error while verifying the code"
         },{status:500});
     }
 }

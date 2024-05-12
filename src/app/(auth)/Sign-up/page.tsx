@@ -36,8 +36,7 @@ const page = () => {
     const CheckUserName=async()=>{
       try {
         setCheckingUsername(true);
-        setUsername('');
-        console.log(Username);
+        // console.log(Username);
         const res=await axios.get(`/api/check-dist-username?username=${debouncedValue}`);
         // console.log(res.data.message);
         setUseNamecheckingMessage(res.data.message)
@@ -54,24 +53,27 @@ const page = () => {
   const onSubmit=async()=>{
     try {
       setOnSubmitting(true);
+      console.log(Username);
       const data={
       "username":Username,
       "email":email,
       "password":password
       }
+      console.log(data);
       const res=await axios.post('/api/sign-up',data);
       toast({
-        title:"success",
+        title:"Success",
         description:res.data.message
       });
-      route
+      route.replace(`/verify/${Username}`);
     } catch (error:any) {
       const axioserror=error as AxiosError<ApiResponse>;
       let errorMessage = axioserror.response?.data.message;
       ('There was a problem with your sign-up. Please try again.');
       toast({
-        title:"failure",
-        description:errorMessage
+        title:"Failure",
+        description:errorMessage,
+        variant:'destructive'
       })
     }finally{
       setOnSubmitting(false);
@@ -98,7 +100,7 @@ const page = () => {
                 <Input placeholder="Username" {...field} onChange={(e)=>{
                   field.onChange(e)
                   setValue(e.target.value)
-                  setUsername(e.target.value)
+                  setUsername(e.target.value) 
                 }} />
               </FormControl>
             </FormItem>
@@ -113,7 +115,7 @@ const page = () => {
             <FormItem>
             <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder="Email" {...field} onChange={(e)=>{
+                <Input placeholder="Email" {...field}  onChange={(e)=>{
                   field.onChange(e)
                   setEmail(e.target.value)
                 }} />
@@ -128,7 +130,7 @@ const page = () => {
             <FormItem>
                <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input placeholder="Password" {...field} onChange={(e)=>{
+                <Input placeholder="Password" {...field} type='password' onChange={(e)=>{
                   field.onChange(e)
                   setpassword(e.target.value)
                 }} />
