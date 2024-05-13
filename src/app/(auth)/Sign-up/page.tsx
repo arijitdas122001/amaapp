@@ -9,7 +9,7 @@ import axios,{AxiosError} from 'axios'
 import { SignUpSchema } from '@/schema/SignUpSchema'
 import { ApiResponse } from '@/types/apiresponse'
 import { useToast } from '@/components/ui/use-toast'
-import { Form, FormControl,FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
+import { Form, FormControl,FormField, FormItem, FormLabel,  } from '@/components/ui/form'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Loader2 } from 'lucide-react'
@@ -50,15 +50,10 @@ const page = () => {
     }
     CheckUserName()
   },[debouncedValue]);
-  const onSubmit=async()=>{
+  const onSubmit=async(data :z.infer<typeof SignUpSchema>)=>{
     try {
       setOnSubmitting(true);
       console.log(Username);
-      const data={
-      "username":Username,
-      "email":email,
-      "password":password
-      }
       console.log(data);
       const res=await axios.post('/api/sign-up',data);
       toast({

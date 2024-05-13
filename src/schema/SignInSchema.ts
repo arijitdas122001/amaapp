@@ -1,10 +1,9 @@
 import { z } from "zod";
 
 export const SignInSchema=z.object({
-    username:z
+    email:z
     .string()
-    .min(3,{message:"userName must be greater that 3 charecters"})
-    .max(10,{message:"userName must be less than 10 charecters"}),
+    .email(),
     password:z
     .string()
     .min(6,{message:"password must be at least 6 charecters"})

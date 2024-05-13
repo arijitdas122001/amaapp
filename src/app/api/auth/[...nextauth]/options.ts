@@ -25,7 +25,7 @@ export const authOptions:NextAuthOptions={
                         throw new Error("user is not verified");
                     }
                     const StrPass:string=credentials?.password!;
-                    const isPasswordCorrect=bcrypt.compare(StrPass,user.password);
+                    const isPasswordCorrect=await bcrypt.compare(StrPass,user.password);
 
                     if(!isPasswordCorrect){ 
                         throw new Error("wrong credentials");

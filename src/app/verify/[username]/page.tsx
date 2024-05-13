@@ -24,13 +24,9 @@ const Verify = () => {
       verificationCode:""
     }
   });
-  const onSubmit=async()=>{
+  const onSubmit=async(data:z.infer<typeof VerifySchema>)=>{
     try {
       setProcessStarting(true);
-      const data={
-        "username":params.username,
-        "code":OTP,
-      }
       const res=await axios.post('/api/verify',data);
       toast({
         title:"Success",

@@ -19,6 +19,6 @@ export const config = {
     '/',
     '/sign-In',
     '/Sign-up',
-    'verify/:path*'
+    '/verify/:path*'
   ],
 }
