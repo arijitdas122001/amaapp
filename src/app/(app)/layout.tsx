@@ -13,8 +13,8 @@ export default function RootLayout({
 }>) {
   return (
     <div>
-        <Navbar/>
-        {children}
+      <Navbar />
+      {children}
     </div>
   );
 }
