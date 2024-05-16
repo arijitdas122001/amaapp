@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Nova_Slim } from "next/font/google";
 import "./globals.css";
 import Provider from "@/context/SessionProvider";
-import { Toaster } from "@/components/ui/toaster"
-import Navbar from "@/components/navbar";
+import { Toaster } from "@/components/ui/toaster";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -21,7 +20,6 @@ export default function RootLayout({
       <Provider>
       <body className={inter.className}>
         {children}
-        <Navbar/>
         <Toaster/>
         </body>
       </Provider>

@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 const DashBoard = () => {
-  cost[ProcessStart,SetProcessStart]=useState(false); 
+  const [ProcessStart,SetProcessStart]=useState(false); 
   const [Messages,SetMessages]=useState([]);
   
   return (
