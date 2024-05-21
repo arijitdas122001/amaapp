@@ -12,8 +12,8 @@ export const authOptions:NextAuthOptions={
                 email: { label: "Email", type: "email"},
                 password: { label: "Password", type: "password" }
               },
-            async authorize(credentials, req):Promise<any>{
-                DbConnection();
+            async authorize(credentials):Promise<any>{
+                await DbConnection();
                 try {
                     const user=await UserModel.findOne({
                        email:credentials?.email
@@ -37,32 +37,33 @@ export const authOptions:NextAuthOptions={
             }         
         })
     ],
-    pages:{
-        signIn:'/Sign-In',
-    },
-    session:{
-        strategy:'jwt'
-    },
-    secret:process.env.NEXTAUTH_SECRET,
     callbacks:{
+        async jwt({ token ,user}) {
+          if(user){
+              token._id=user._id?.toString();
+              token.isVerified=user.isVerified;
+              token.isAcceptingMessages=user.isAcceptingMessages;
+              token.username=user.username;
+          }
+          return token
+        },
          async session({ session,token }) {
             if(token){
-                session.user._id=token._id?.toString();
+                session.user._id=token._id;
                 session.user.isVerified=token.isVerified;
                 session.user.isAcceptingMessages=token.isAcceptingMessages;
                 session.user.username=token.username;
 
             }
-            return session
+            // console.log(session);
+            return session;
           },
-          async jwt({ token ,user}) {
-            if(user){
-                token._id=user._id?.toString();
-                token.isVerified=user.isVerified;
-                token.isAcceptingMessages=user.isAcceptingMessages;
-                token.username=user.username;
-            }
-            return token
-          }
-    }
+    },
+    session: {
+        strategy: 'jwt',
+      },
+      secret: process.env.NEXTAUTH_SECRET,
+      pages: {
+        signIn: '/sign-in',
+      },
 } 

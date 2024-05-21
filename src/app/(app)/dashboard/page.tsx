@@ -9,6 +9,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast, useToast } from "@/components/ui/use-toast";
 import { Message } from "@/model/User";
 import { useSession } from "next-auth/react";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label"
+import { Switch } from "@/components/ui/switch"
 const DashBoard = () => {
   const [ProcessStart,SetProcessStart]=useState(false); 
   const [Messages,SetMessages]=useState<Message[]>([]);
@@ -25,7 +28,8 @@ const DashBoard = () => {
   const FetchMessages=useCallback(async()=>{
     try {
     SetLoading(true);
-    const res=await axios.get<ApiResponse>('/api/get-messages');
+    const res=await axios.get('/api/get-messages');
+    console.log(res.data);
     SetMessages(res.data.messages || []);
     }catch(error:any){
       const axioserror=error as AxiosError<ApiResponse>;
@@ -75,10 +79,23 @@ const DashBoard = () => {
     if(!session || !session?.user)return;
       FetchMessages();
       IsMessageAccepting();
-  },[session,IsMessageAccepting,FetchMessages,toast])
+  },[FetchMessages,IsMessageAccepting]);
   return (
     <div>
-      
+      <h1>User Dashborad</h1>
+      <div>
+        <div>
+          copy your unique Link
+          {}
+          <Button>Copy</Button>
+        </div>
+        <div>
+        <div className="flex items-center space-x-2">
+      <Switch id="toogle" />
+      <Label htmlFor="toogle">Accept Messages</Label>
+    </div>
+        </div>
+      </div>
     </div>
   )
 }

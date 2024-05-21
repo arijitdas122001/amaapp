@@ -1,15 +1,15 @@
 import { DbConnection } from "@/lib/dbConnection";
-import { getServerSession } from "next-auth";
-import { NextRequest } from "next/server";
+import { getServerSession } from "next-auth/next"
 import { authOptions } from "../auth/[...nextauth]/options";
 import mongoose from "mongoose";
 import apiResponse from "@/utils/apiResponse";
 import UserModel from "@/model/User";
 
-export async function GET(request:NextRequest) {
+export async function GET(request:Request) {
     await DbConnection();
         const session=await getServerSession(authOptions);
         const user=session?.user;
+        console.log(user);
         if(!session && !user){
             return apiResponse(false,"Not authintacated",401)
         }
@@ -22,7 +22,7 @@ export async function GET(request:NextRequest) {
                 }},
                 {$sort:{'messages.createdAt':-1}},
                 {$group:{_id:'$_id',messages:{$push:"$messages"}}}
-            ]);
+            ]).exec();
             if(!messages){
                 return apiResponse(false,"User Not found in get-messages",401);
             }
