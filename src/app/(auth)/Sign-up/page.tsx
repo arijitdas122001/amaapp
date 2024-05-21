@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form"
 import z from 'zod'
 import axios,{AxiosError} from 'axios'
 import { SignUpSchema } from '@/schema/SignUpSchema'
-import { ApiResponse } from '@/types/apiresponse'
+import { ApiResponse } from '@/types/ApiResponse'
 import { useToast } from '@/components/ui/use-toast'
 import { Form, FormControl,FormField, FormItem, FormLabel,  } from '@/components/ui/form'
 import { Button } from '@/components/ui/button'

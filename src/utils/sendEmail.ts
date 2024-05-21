@@ -1,4 +1,4 @@
-import { ApiResponse } from "@/types/apiresponse";
+import { ApiResponse } from "@/types/ApiResponse";
 import { resend } from "@/lib/resend";
 import VerificationEmail from "../../emails/email-component";
 export const SendEmail=async(

@@ -4,7 +4,7 @@ import { Form, FormControl,FormField, FormItem, FormLabel,} from '@/components/u
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/components/ui/use-toast';
 import { VerifySchema } from '@/schema/verfiySchema';
-import { ApiResponse } from '@/types/apiresponse';
+import { ApiResponse } from '@/types/ApiResponse';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios, { AxiosError } from 'axios';
 import { Loader2 } from 'lucide-react';
