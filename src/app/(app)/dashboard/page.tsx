@@ -80,13 +80,23 @@ const DashBoard = () => {
       FetchMessages();
       IsMessageAccepting();
   },[]);
+  const username=session?.user;
+  const baseUrl=`${window.location.protocol}//${window.location.host}`
+  const userUrl=`${baseUrl}/u/${username}`
+  const copyToclipboard=()=>{
+    navigator.clipboard.writeText(userUrl);
+    toast({
+      title:"Copied",
+      description:"Url copied successfully"
+    })
+  }
   return (
     <div>
       <h1>User Dashborad</h1>
       <div>
         <div>
           copy your unique Link
-          <Button onClick={FetchMessages}>Copy</Button>
+          <Button onClick={copyToclipboard}>Copy</Button>
         </div>
         <div>
         <div className="flex items-center space-x-2">
