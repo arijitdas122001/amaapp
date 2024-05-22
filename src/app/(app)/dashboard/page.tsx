@@ -25,11 +25,11 @@ const DashBoard = () => {
     setValue
   }=form;
   const acceptMessages=watch('acceptMessages');
-  const FetchMessages=useCallback(async()=>{
+  const FetchMessages=async()=>{
     try {
     SetLoading(true);
-    const res=await axios.get('/api/get-messages');
-    console.log(res.data);
+    const res=await axios.get<ApiResponse>('/api/get-messages');
+    // console.log(res.data.messages);
     SetMessages(res.data.messages || []);
     }catch(error:any){
       const axioserror=error as AxiosError<ApiResponse>;
@@ -42,7 +42,7 @@ const DashBoard = () => {
     finally{
       SetLoading(false);
     }
-  },[SetMessages]);
+  };
   const ToogleAcceptMessage=async()=>{
     try {
       const res=await axios.post('/api/accept-messages',{
@@ -74,20 +74,19 @@ const DashBoard = () => {
        })
     }
   }
-  const {data:session}=useSession();
+  const {data:session}=useSession();  
   useEffect(()=>{
     if(!session || !session?.user)return;
       FetchMessages();
       IsMessageAccepting();
-  },[FetchMessages,IsMessageAccepting]);
+  },[]);
   return (
     <div>
       <h1>User Dashborad</h1>
       <div>
         <div>
           copy your unique Link
-          {}
-          <Button>Copy</Button>
+          <Button onClick={FetchMessages}>Copy</Button>
         </div>
         <div>
         <div className="flex items-center space-x-2">
