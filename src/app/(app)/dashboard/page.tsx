@@ -12,15 +12,7 @@ import { useSession } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel" 
 import MessageCard from "@/components/messageCard";
-import { isAscii } from "buffer";
 const DashBoard = () => {
   const [ProcessStart, SetProcessStart] = useState(false);
   const [Messages, SetMessages] = useState<Message[]>([]);
@@ -29,7 +21,7 @@ const DashBoard = () => {
   const form = useForm({
     resolver: zodResolver(acceptMessageSchema),
   });
-  const { watch, setValue } = form;
+  const { watch, setValue,register } = form;
   const acceptMessages = watch("acceptMessages");
   const FetchMessages = async () => {
     try {
@@ -85,7 +77,7 @@ const DashBoard = () => {
     if (!session || !session?.user) return;
     FetchMessages();
     IsMessageAccepting();
-  },[]);
+  },[session]);
   const username = session?.user;
   const baseUrl = `${window.location.protocol}//${window.location.host}`;
   const userUrl = `${baseUrl}/u/${username}`;
@@ -102,32 +94,30 @@ const DashBoard = () => {
   return (
     <div>
       <h1>User Dashborad</h1>
-      <div className="top-page">
+      <div className="flex justify-around">
         <div className="left-page">
           copy your unique Link
           <Button onClick={copyToclipboard}>Copy</Button>
         </div>
         <div className="right-page">
           <div className="flex items-center space-x-2">
-            <Switch id="toogle" />
+            <Switch id="toogle" 
+            {...register('acceptMessages')}
+            checked={acceptMessages}
+            onCheckedChange={ToogleAcceptMessage}
+             />
             <Label htmlFor="toogle">Accept Messages</Label>
           </div>
         </div>
-        <div className="cards">
-        <Carousel className="w-full max-w-xs">
-      <CarouselContent>
-        {Messages.map((ele,i)=>(
-          <CarouselItem key={i}>
-            <div className="p-1">
-              <MessageCard message={ele} OnMessageDelete={handelDeleteMessage}/>
-            </div>
-          </CarouselItem>
-        ))}
-      </CarouselContent>
-      <CarouselPrevious />
-      <CarouselNext />
-    </Carousel>
         </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {Messages.length===0?
+          (<h1>There are no Messages For you</h1>)
+          :
+        Messages.map((ele,i)=>(
+          <MessageCard message={ele} OnMessageDelete={handelDeleteMessage}/>
+        ))
+      }
       </div>
     </div>
   );
