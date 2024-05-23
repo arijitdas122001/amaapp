@@ -13,13 +13,13 @@ export async function GET(request:Request) {
         // console.log("your backend session variable ",session1);
         const _user=session?.user;
         // console.log(user);
-        if(!session && !_user){
+        if(!session || !_user){
             return apiResponse(false,"Not authintacated",401)
         }
         const user_id=new mongoose.Types.ObjectId(_user?._id);
         try {
             const user_messages=await UserModel.aggregate([
-                {$match:{user_id}},
+                {$match:{_id:user_id}},
                 {$unwind:{
                     path:'$messages'                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
                 }},
@@ -31,7 +31,7 @@ export async function GET(request:Request) {
             }
             // console.log(user);
             return Response.json(
-                { messages: user_messages },
+                { messages: user_messages[0].messages },
                 {
                   status: 200,
                 }

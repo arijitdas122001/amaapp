@@ -35,7 +35,7 @@ const DashBoard = () => {
     try {
       SetLoading(true);
       const res = await axios.get<ApiResponse>("/api/get-messages");
-      console.log(res.data.messages);
+      console.log(res.data);
       SetMessages(res.data.messages || []);
     } catch (error: any) {
       const axioserror = error as AxiosError<ApiResponse>;
