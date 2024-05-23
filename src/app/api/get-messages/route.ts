@@ -18,7 +18,7 @@ export async function GET(request:Request) {
         }
         const user_id=new mongoose.Types.ObjectId(_user?._id);
         try {
-            const user=await UserModel.aggregate([
+            const user_messages=await UserModel.aggregate([
                 {$match:{user_id}},
                 {$unwind:{
                     path:'$messages'                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
@@ -26,12 +26,12 @@ export async function GET(request:Request) {
                 {$sort:{'messages.createdAt':-1}},
                 {$group:{_id:'$_id',messages:{$push:"$messages"}}}
             ]).exec();
-            if(!user){
+            if(!user_messages){
                 return apiResponse(false,"User Not found in get-messages",401);
             }
             // console.log(user);
             return Response.json(
-                { messages: user },
+                { messages: user_messages },
                 {
                   status: 200,
                 }
