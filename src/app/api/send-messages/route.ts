@@ -6,7 +6,7 @@ import apiResponse from '@/utils/apiResponse';
 export async function POST(request: Request) {
     await DbConnection()
   const { username, content } = await request.json();
-
+//commnt
   try {
     const user = await UserModel.findOne({ username }).exec();
 
